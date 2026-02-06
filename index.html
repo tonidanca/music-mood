@@ -106,7 +106,6 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s;
-            cursor: pointer;
         }
 
         .mood-card:hover {
@@ -124,6 +123,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            cursor: pointer;
         }
 
         .mood-icon {
@@ -174,55 +174,141 @@
         }
 
         .genre-section {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 12px;
         }
 
         .genre-section:last-child {
             margin-bottom: 0;
         }
 
-        .genre-button {
-            width: 100%;
-            background: linear-gradient(135deg, rgba(29, 185, 84, 0.2), rgba(30, 215, 96, 0.15));
-            border: 1px solid rgba(29, 185, 84, 0.4);
-            padding: 14px 18px;
-            border-radius: 10px;
-            cursor: pointer;
+        .genre-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: #fff;
-        }
-
-        .genre-button:hover {
-            background: linear-gradient(135deg, rgba(29, 185, 84, 0.3), rgba(30, 215, 96, 0.25));
-            border-color: #1DB954;
-            transform: translateX(5px);
-        }
-
-        .genre-button:active {
-            transform: translateX(5px) scale(0.98);
+            cursor: pointer;
+            padding: 8px 0;
         }
 
         .genre-name {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             color: #1DB954;
         }
 
         .genre-arrow {
+            transition: transform 0.3s;
             color: #1DB954;
-            font-size: 18px;
+            font-size: 14px;
         }
 
-        .info-text {
-            font-size: 12px;
+        .genre-arrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        .genre-playlists {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .genre-playlists.show {
+            display: block;
+        }
+
+        .playlist-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .playlist-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .playlist-item:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .spotify-icon {
+            color: #1DB954;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .playlist-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .playlist-name {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-description {
+            font-size: 11px;
             color: #b3b3b3;
-            text-align: center;
-            margin-top: 12px;
-            font-style: italic;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-buttons {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .play-button, .preview-button {
+            background: #1DB954;
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .preview-button {
+            background: rgba(29, 185, 84, 0.3);
+            border: 1px solid #1DB954;
+            color: #1DB954;
+        }
+
+        .play-button:hover {
+            background: #1ed760;
+            transform: scale(1.05);
+        }
+
+        .preview-button:hover {
+            background: rgba(29, 185, 84, 0.5);
+        }
+
+        .spotify-embed {
+            margin-top: 10px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .spotify-embed.show {
+            display: block;
         }
 
         @media (max-width: 480px) {
@@ -236,6 +322,16 @@
 
             .mood-title {
                 font-size: 18px;
+            }
+
+            .playlist-buttons {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .play-button, .preview-button {
+                font-size: 10px;
+                padding: 5px 10px;
             }
         }
     </style>
@@ -290,7 +386,23 @@
                 duration: 40,
                 timeOfDay: ['afternoon', 'evening', 'night'],
                 moodType: 'emotion',
-                genres: ['Piano', 'Soft', 'Indie']
+                genres: {
+                    'Piano': [
+                        { name: 'Peaceful Piano', desc: 'Piano rilassante', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO', id: '37i9dQZF1DX4sWSpwq3LiO' },
+                        { name: 'Piano in the Background', desc: 'Piano sottofondo', url: 'https://open.spotify.com/playlist/37i9dQZF1DX7K31D69s4M1', id: '37i9dQZF1DX7K31D69s4M1' },
+                        { name: 'Classical Piano', desc: 'Classici al piano', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWJOmJ7nRx0C', id: '37i9dQZF1DWWJOmJ7nRx0C' }
+                    ],
+                    'Soft': [
+                        { name: 'Sad Indie', desc: 'Indie malinconico', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3YSRoSdA634', id: '37i9dQZF1DX3YSRoSdA634' },
+                        { name: 'Acoustic Chill', desc: 'Acustico rilassante', url: 'https://open.spotify.com/playlist/37i9dQZF1DX1s9knjP51Oa', id: '37i9dQZF1DX1s9knjP51Oa' },
+                        { name: 'Chill Hits', desc: 'Hit tranquille', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6', id: '37i9dQZF1DX4WYpdgoIcn6' }
+                    ],
+                    'Indie': [
+                        { name: 'Indie Folk', desc: 'Folk indie', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWBHeXOYZf74', id: '37i9dQZF1DWWBHeXOYZf74' },
+                        { name: 'Bedroom Pop', desc: 'Indie intimista', url: 'https://open.spotify.com/playlist/37i9dQZF1DX2TRYkJECvfC', id: '37i9dQZF1DX2TRYkJECvfC' },
+                        { name: 'Pov: Indie', desc: 'Indie moderno', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0', id: '37i9dQZF1DX3rxVfibe1L0' }
+                    ]
+                }
             },
             {
                 id: 'addormentarsi',
@@ -299,7 +411,24 @@
                 duration: 13,
                 timeOfDay: ['night'],
                 moodType: 'relax',
-                genres: ['Lofi', 'Soft', 'Vaporwave']
+                genres: {
+                    'Lofi': [
+                        { name: 'Lofi Beats', desc: 'Beat lofi tranquilli', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWQRwui0ExPn', id: '37i9dQZF1DWWQRwui0ExPn' },
+                        { name: 'Chill Lofi Study', desc: 'Lofi per studiare', url: 'https://open.spotify.com/playlist/37i9dQZF1DXc8kgYqQLMfH', id: '37i9dQZF1DXc8kgYqQLMfH' },
+                        { name: 'Lo-Fi Beats', desc: 'Hip hop lofi', url: 'https://open.spotify.com/playlist/37i9dQZF1DX8Uebhn9wzrS', id: '37i9dQZF1DX8Uebhn9wzrS' }
+                    ],
+                    'Soft': [
+                        { name: 'Sleep', desc: 'Per dormire', url: 'https://open.spotify.com/playlist/37i9dQZF1DWZd79rJ6a7lp', id: '37i9dQZF1DWZd79rJ6a7lp' },
+                        { name: 'Peaceful Guitar', desc: 'Chitarra tranquilla', url: 'https://open.spotify.com/playlist/37i9dQZF1DX1s9knjP51Oa', id: '37i9dQZF1DX1s9knjP51Oa' },
+                        { name: 'Calm Vibes', desc: 'Atmosfera calma', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY', id: '37i9dQZF1DX3Ogo9pFvBkY' },
+                        { name: 'Soft Piano', desc: 'Piano dolce', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO', id: '37i9dQZF1DX4sWSpwq3LiO' }
+                    ],
+                    'Vaporwave': [
+                        { name: 'Vaporwave', desc: 'Estetica vaporwave', url: 'https://open.spotify.com/playlist/37i9dQZF1DXdbXrPNafg9d', id: '37i9dQZF1DXdbXrPNafg9d' },
+                        { name: 'Chillwave', desc: 'Wave rilassante', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4dyzvuaRJ0n', id: '37i9dQZF1DX4dyzvuaRJ0n' },
+                        { name: 'Synthwave', desc: 'Synth rilassante', url: 'https://open.spotify.com/playlist/37i9dQZF1DX7K31D69s4M1', id: '37i9dQZF1DX7K31D69s4M1' }
+                    ]
+                }
             },
             {
                 id: 'umore',
@@ -308,7 +437,24 @@
                 duration: 9,
                 timeOfDay: ['morning', 'afternoon'],
                 moodType: 'energy',
-                genres: ['Pop', 'Dance', 'House']
+                genres: {
+                    'Pop': [
+                        { name: 'Happy Hits!', desc: 'Hit allegre', url: 'https://open.spotify.com/playlist/37i9dQZF1DXdPec7aLTmlC', id: '37i9dQZF1DXdPec7aLTmlC' },
+                        { name: 'Feel Good', desc: 'Sentirsi bene', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0', id: '37i9dQZF1DX3rxVfibe1L0' },
+                        { name: 'Pop Rising', desc: 'Nuovo pop', url: 'https://open.spotify.com/playlist/37i9dQZF1DWUa8ZRTfalHk', id: '37i9dQZF1DWUa8ZRTfalHk' }
+                    ],
+                    'Dance': [
+                        { name: 'Dance Hits', desc: 'Hit da ballare', url: 'https://open.spotify.com/playlist/37i9dQZF1DX0UrRvztWcAU', id: '37i9dQZF1DX0UrRvztWcAU' },
+                        { name: 'Dance Party', desc: 'Party dance', url: 'https://open.spotify.com/playlist/37i9dQZF1DX0BcQWzuB7XP', id: '37i9dQZF1DX0BcQWzuB7XP' },
+                        { name: 'Dance Pop', desc: 'Pop da ballare', url: 'https://open.spotify.com/playlist/37i9dQZF1DX32NsLKyzScr', id: '37i9dQZF1DX32NsLKyzScr' },
+                        { name: 'Dance Rising', desc: 'Nuova dance', url: 'https://open.spotify.com/playlist/37i9dQZF1DX1n2UYnh7oLn', id: '37i9dQZF1DX1n2UYnh7oLn' }
+                    ],
+                    'House': [
+                        { name: 'Feel Good House', desc: 'House positiva', url: 'https://open.spotify.com/playlist/37i9dQZF1DX6J5NfMJS675', id: '37i9dQZF1DX6J5NfMJS675' },
+                        { name: 'Deep House Relax', desc: 'Deep house', url: 'https://open.spotify.com/playlist/37i9dQZF1DX2TRYkJECvfC', id: '37i9dQZF1DX2TRYkJECvfC' },
+                        { name: 'Sunny Beats', desc: 'Beat solari', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4dyzvuaRJ0n', id: '37i9dQZF1DX4dyzvuaRJ0n' }
+                    ]
+                }
             },
             {
                 id: 'ansia',
@@ -317,7 +463,24 @@
                 duration: 20,
                 timeOfDay: ['afternoon', 'evening'],
                 moodType: 'relax',
-                genres: ['Classica', 'Jazz', 'Ambient']
+                genres: {
+                    'Classica': [
+                        { name: 'Peaceful Piano', desc: 'Piano classico', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO', id: '37i9dQZF1DX4sWSpwq3LiO' },
+                        { name: 'Classical Essentials', desc: 'Classici essenziali', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWEJlAGA9gs0', id: '37i9dQZF1DWWEJlAGA9gs0' },
+                        { name: 'Baroque Essentials', desc: 'Barocco', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWjGdmeTyeJ6', id: '37i9dQZF1DWWjGdmeTyeJ6' }
+                    ],
+                    'Jazz': [
+                        { name: 'Jazz Vibes', desc: 'Vibrazioni jazz', url: 'https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT', id: '37i9dQZF1DX0SM0LYsmbMT' },
+                        { name: 'Smooth Jazz', desc: 'Jazz smooth', url: 'https://open.spotify.com/playlist/37i9dQZF1DWTbzY5gOVvKd', id: '37i9dQZF1DWTbzY5gOVvKd' },
+                        { name: 'Jazz for Study', desc: 'Jazz per studiare', url: 'https://open.spotify.com/playlist/37i9dQZF1DX8Uebhn9wzrS', id: '37i9dQZF1DX8Uebhn9wzrS' },
+                        { name: 'Coffee Table Jazz', desc: 'Jazz da bar', url: 'https://open.spotify.com/playlist/37i9dQZF1DWV7EzJMK2FUI', id: '37i9dQZF1DWV7EzJMK2FUI' }
+                    ],
+                    'Ambient': [
+                        { name: 'Ambient Relaxation', desc: 'Relax ambient', url: 'https://open.spotify.com/playlist/37i9dQZF1DWZd79rJ6a7lp', id: '37i9dQZF1DWZd79rJ6a7lp' },
+                        { name: 'Deep Focus', desc: 'Focus profondo', url: 'https://open.spotify.com/playlist/37i9dQZF1DWZeKCadgRdKQ', id: '37i9dQZF1DWZeKCadgRdKQ' },
+                        { name: 'Atmospheric Calm', desc: 'Calma atmosferica', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY', id: '37i9dQZF1DX3Ogo9pFvBkY' }
+                    ]
+                }
             },
             {
                 id: 'noia',
@@ -326,7 +489,19 @@
                 duration: 11,
                 timeOfDay: ['afternoon', 'evening'],
                 moodType: 'emotion',
-                genres: ['Strumentale', 'Colonne Sonore']
+                genres: {
+                    'Strumentale': [
+                        { name: 'Instrumental Hits', desc: 'Hit strumentali', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY', id: '37i9dQZF1DX3Ogo9pFvBkY' },
+                        { name: 'Classical New Releases', desc: 'Nuova classica', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWEJlAGA9gs0', id: '37i9dQZF1DWWEJlAGA9gs0' },
+                        { name: 'Guitar Focus', desc: 'Chitarra focus', url: 'https://open.spotify.com/playlist/37i9dQZF1DX1s9knjP51Oa', id: '37i9dQZF1DX1s9knjP51Oa' }
+                    ],
+                    'Colonne Sonore': [
+                        { name: 'Epic & Dramatic', desc: 'Epico e drammatico', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY', id: '37i9dQZF1DX3Ogo9pFvBkY' },
+                        { name: 'Cinematic Music', desc: 'Musica cinematica', url: 'https://open.spotify.com/playlist/37i9dQZF1DX0XUfTFmNBRM', id: '37i9dQZF1DX0XUfTFmNBRM' },
+                        { name: 'Soundtracks', desc: 'Colonne sonore', url: 'https://open.spotify.com/playlist/37i9dQZF1DX51VjjBKpU0G', id: '37i9dQZF1DX51VjjBKpU0G' },
+                        { name: 'Video Game Soundtracks', desc: 'Musica da videogiochi', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO', id: '37i9dQZF1DX4sWSpwq3LiO' }
+                    ]
+                }
             },
             {
                 id: 'concentrazione',
@@ -335,7 +510,24 @@
                 duration: 30,
                 timeOfDay: ['morning', 'afternoon', 'evening'],
                 moodType: 'focus',
-                genres: ['Binaural 40Hz', 'White Noise', 'Ambient']
+                genres: {
+                    'Binaural 40Hz': [
+                        { name: 'Binaural Beats Focus', desc: 'Frequenze 40Hz', url: 'https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT', id: '37i9dQZF1DX0SM0LYsmbMT' },
+                        { name: 'Deep Focus', desc: 'Focus profondo', url: 'https://open.spotify.com/playlist/37i9dQZF1DWZeKCadgRdKQ', id: '37i9dQZF1DWZeKCadgRdKQ' },
+                        { name: 'Brain Food', desc: 'Cibo per il cervello', url: 'https://open.spotify.com/playlist/37i9dQZF1DX7K31D69s4M1', id: '37i9dQZF1DX7K31D69s4M1' }
+                    ],
+                    'White Noise': [
+                        { name: 'White Noise', desc: 'Rumore bianco', url: 'https://open.spotify.com/playlist/37i9dQZF1DWVrtsSlLKzro', id: '37i9dQZF1DWVrtsSlLKzro' },
+                        { name: 'Pink Noise', desc: 'Rumore rosa', url: 'https://open.spotify.com/playlist/37i9dQZF1DX8Uebhn9wzrS', id: '37i9dQZF1DX8Uebhn9wzrS' },
+                        { name: 'Brown Noise', desc: 'Rumore marrone', url: 'https://open.spotify.com/playlist/37i9dQZF1DWZd79rJ6a7lp', id: '37i9dQZF1DWZd79rJ6a7lp' },
+                        { name: 'Nature Sounds', desc: 'Suoni natura', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4PP3DA4J0N8', id: '37i9dQZF1DX4PP3DA4J0N8' }
+                    ],
+                    'Ambient': [
+                        { name: 'Deep Focus', desc: 'Focus intenso', url: 'https://open.spotify.com/playlist/37i9dQZF1DWZeKCadgRdKQ', id: '37i9dQZF1DWZeKCadgRdKQ' },
+                        { name: 'Ambient Study', desc: 'Studio ambient', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY', id: '37i9dQZF1DX3Ogo9pFvBkY' },
+                        { name: 'Instrumental Study', desc: 'Studio strumentale', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3PFzdbtx1Us', id: '37i9dQZF1DX3PFzdbtx1Us' }
+                    ]
+                }
             },
             {
                 id: 'motivazione',
@@ -344,7 +536,24 @@
                 duration: 5,
                 timeOfDay: ['morning', 'afternoon'],
                 moodType: 'energy',
-                genres: ['Elettronica', 'Hardcore', 'Phonk']
+                genres: {
+                    'Elettronica': [
+                        { name: 'Power Workout', desc: 'Workout potente', url: 'https://open.spotify.com/playlist/37i9dQZF1DX76Wlfdnj7AP', id: '37i9dQZF1DX76Wlfdnj7AP' },
+                        { name: 'Beast Mode', desc: 'Modalità bestia', url: 'https://open.spotify.com/playlist/37i9dQZF1DWSJHnPb1f0zA', id: '37i9dQZF1DWSJHnPb1f0zA' },
+                        { name: 'Electronic Energy', desc: 'Energia elettronica', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4JAvHpjipBk', id: '37i9dQZF1DX4JAvHpjipBk' }
+                    ],
+                    'Hardcore': [
+                        { name: 'Gym Motivation', desc: 'Motivazione gym', url: 'https://open.spotify.com/playlist/37i9dQZF1DWUVpAXiEPK8P', id: '37i9dQZF1DWUVpAXiEPK8P' },
+                        { name: 'Hard Dance', desc: 'Hard dance', url: 'https://open.spotify.com/playlist/37i9dQZF1DX0pH2SQMRXnC', id: '37i9dQZF1DX0pH2SQMRXnC' },
+                        { name: 'Hardstyle Bangers', desc: 'Hardstyle top', url: 'https://open.spotify.com/playlist/37i9dQZF1DX9wa6XirBPv8', id: '37i9dQZF1DX9wa6XirBPv8' },
+                        { name: 'Hardcore Energy', desc: 'Energia hardcore', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWOaP4H0w5b0', id: '37i9dQZF1DWWOaP4H0w5b0' }
+                    ],
+                    'Phonk': [
+                        { name: 'Phonk', desc: 'Phonk vibes', url: 'https://open.spotify.com/playlist/37i9dQZF1DX0XUfTFmNBRM', id: '37i9dQZF1DX0XUfTFmNBRM' },
+                        { name: 'Drift Phonk', desc: 'Phonk da drift', url: 'https://open.spotify.com/playlist/37i9dQZF1DWY4xHQp97fN6', id: '37i9dQZF1DWY4xHQp97fN6' },
+                        { name: 'Aggressive Phonk', desc: 'Phonk aggressivo', url: 'https://open.spotify.com/playlist/37i9dQZF1DX9qNs32fujYe', id: '37i9dQZF1DX9qNs32fujYe' }
+                    ]
+                }
             },
             {
                 id: 'sfogo',
@@ -353,7 +562,14 @@
                 duration: 30,
                 timeOfDay: ['afternoon', 'evening'],
                 moodType: 'energy',
-                genres: ['Metal', 'Hard Rock', 'Metalcore']
+                genres: {
+                    'Metal': [
+                        { name: 'Metal Essentials', desc: 'Essenziali metal', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWOaP4H0w5b0', id: '37i9dQZF1DWWOaP4H0w5b0' },
+                        { name: 'Aggressive Metal', desc: 'Metal aggressivo', url: 'https://open.spotify.com/playlist/37i9dQZF1DX9qNs32fujYe', id: '37i9dQZF1DX9qNs32fujYe' },
+                        { name: 'Death Metal', desc: 'Death metal', url: 'https://open.spotify.com/playlist/37i9dQZF1DWTcqUzwhNmKv', id: '37i9dQZF1DWTcqUzwhNmKv' },
+                        { name: 'Thrash Metal', desc: 'Thrash metal', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWwAxXkPl9lz', id: '37i9dQZF1DWWwAxXkPl9lz' }
+                    ]
+                }
             },
             {
                 id: 'risveglio',
@@ -362,15 +578,26 @@
                 duration: 10,
                 timeOfDay: ['morning'],
                 moodType: 'energy',
-                genres: ['EDM', 'Progressive House', 'Drum and Bass']
+                genres: {
+                    'EDM': [
+                        { name: 'Beast Mode', desc: 'EDM potente', url: 'https://open.spotify.com/playlist/37i9dQZF1DX76Wlfdnj7AP', id: '37i9dQZF1DX76Wlfdnj7AP' },
+                        { name: 'Electronic Rising', desc: 'Elettronica emergente', url: 'https://open.spotify.com/playlist/37i9dQZF1DX8tZsk68tuDw', id: '37i9dQZF1DX8tZsk68tuDw' },
+                        { name: 'EDM Hits', desc: 'Hit EDM', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4JAvHpjipBk', id: '37i9dQZF1DX4JAvHpjipBk' }
+                    ],
+                    'Progressive House': [
+                        { name: 'House Nation', desc: 'Nazione house', url: 'https://open.spotify.com/playlist/37i9dQZF1DX4dyzvuaRJ0n', id: '37i9dQZF1DX4dyzvuaRJ0n' },
+                        { name: 'Uplifting House', desc: 'House elevante', url: 'https://open.spotify.com/playlist/37i9dQZF1DWZd79rJ6a7lp', id: '37i9dQZF1DWZd79rJ6a7lp' },
+                        { name: 'Peak Time House', desc: 'House al massimo', url: 'https://open.spotify.com/playlist/37i9dQZF1DX6J5NfMJS675', id: '37i9dQZF1DX6J5NfMJS675' },
+                        { name: 'Melodic House', desc: 'House melodica', url: 'https://open.spotify.com/playlist/37i9dQZF1DX3AqFR0JgKSd', id: '37i9dQZF1DX3AqFR0JgKSd' }
+                    ],
+                    'Drum and Bass': [
+                        { name: 'Drum & Bass', desc: 'DnB classico', url: 'https://open.spotify.com/playlist/37i9dQZF1DX2LTcinqsO68', id: '37i9dQZF1DX2LTcinqsO68' },
+                        { name: 'DnB Arena', desc: 'Arena DnB', url: 'https://open.spotify.com/playlist/37i9dQZF1DX9wa6XirBPv8', id: '37i9dQZF1DX9wa6XirBPv8' },
+                        { name: 'Liquid DnB', desc: 'DnB liquido', url: 'https://open.spotify.com/playlist/37i9dQZF1DWWJOmJ7nRx0C', id: '37i9dQZF1DWWJOmJ7nRx0C' }
+                    ]
+                }
             }
         ];
-
-        function createSpotifySearchUrl(genre) {
-            // Encode the genre for URL
-            const searchQuery = encodeURIComponent(genre);
-            return `https://open.spotify.com/search/${searchQuery}/playlists`;
-        }
 
         function sortMoods(moods, sortType) {
             const sorted = [...moods];
@@ -397,14 +624,31 @@
                 card.className = 'mood-card';
                 card.dataset.moodId = mood.id;
 
-                const genresHTML = mood.genres.map(genre => {
-                    const searchUrl = createSpotifySearchUrl(genre);
+                const genresHTML = Object.entries(mood.genres).map(([genreName, playlists]) => {
+                    const playlistsHTML = playlists.map(pl => `
+                        <div class="playlist-item">
+                            <div class="spotify-icon">▶</div>
+                            <div class="playlist-info">
+                                <div class="playlist-name">${pl.name}</div>
+                                <div class="playlist-description">${pl.desc}</div>
+                            </div>
+                            <div class="playlist-buttons">
+                                <a href="${pl.url}" target="_blank" class="play-button">Apri</a>
+                                <button class="preview-button" onclick="togglePreview('${mood.id}', '${genreName}', '${pl.id}', this)">Preview</button>
+                            </div>
+                        </div>
+                    `).join('');
+
                     return `
                         <div class="genre-section">
-                            <a href="${searchUrl}" target="_blank" class="genre-button">
-                                <span class="genre-name">${genre}</span>
-                                <span class="genre-arrow">→</span>
-                            </a>
+                            <div class="genre-header" onclick="toggleGenre('${mood.id}', '${genreName}')">
+                                <span class="genre-name">${genreName}</span>
+                                <span class="genre-arrow" id="arrow-${mood.id}-${genreName}">▼</span>
+                            </div>
+                            <div class="genre-playlists" id="playlists-${mood.id}-${genreName}">
+                                ${playlistsHTML}
+                                <div class="spotify-embed" id="embed-${mood.id}-${genreName}"></div>
+                            </div>
                         </div>
                     `;
                 }).join('');
@@ -419,7 +663,6 @@
                     </div>
                     <div class="genres-container" id="genres-${mood.id}">
                         ${genresHTML}
-                        <p class="info-text">Cliccando si apre Spotify con playlist personalizzate per te</p>
                     </div>
                 `;
 
@@ -439,7 +682,6 @@
                 genresContainer.classList.remove('show');
                 card.classList.remove('active');
             } else {
-                // Close all other moods
                 document.querySelectorAll('.genres-container.show').forEach(container => {
                     container.classList.remove('show');
                 });
@@ -449,6 +691,50 @@
                 
                 genresContainer.classList.add('show');
                 card.classList.add('active');
+            }
+        }
+
+        function toggleGenre(moodId, genreName) {
+            const playlists = document.getElementById(`playlists-${moodId}-${genreName}`);
+            const arrow = document.getElementById(`arrow-${moodId}-${genreName}`);
+            
+            if (playlists.classList.contains('show')) {
+                playlists.classList.remove('show');
+                arrow.classList.remove('rotated');
+            } else {
+                playlists.classList.add('show');
+                arrow.classList.add('rotated');
+            }
+        }
+
+        function togglePreview(moodId, genreName, playlistId, button) {
+            const embedContainer = document.getElementById(`embed-${moodId}-${genreName}`);
+            
+            if (embedContainer.classList.contains('show')) {
+                embedContainer.classList.remove('show');
+                embedContainer.innerHTML = '';
+                button.textContent = 'Preview';
+            } else {
+                // Close all other previews
+                document.querySelectorAll('.spotify-embed.show').forEach(embed => {
+                    embed.classList.remove('show');
+                    embed.innerHTML = '';
+                });
+                document.querySelectorAll('.preview-button').forEach(btn => {
+                    btn.textContent = 'Preview';
+                });
+                
+                embedContainer.innerHTML = `
+                    <iframe style="border-radius:12px" 
+                        src="https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0" 
+                        width="100%" height="152" frameBorder="0" 
+                        allowfullscreen="" 
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                        loading="lazy">
+                    </iframe>
+                `;
+                embedContainer.classList.add('show');
+                button.textContent = 'Nascondi';
             }
         }
 
